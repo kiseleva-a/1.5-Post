@@ -48,6 +48,7 @@ object WallService {
 
     fun clear() {
         posts = emptyArray()
+        lastId = 0
     }
 }
 
