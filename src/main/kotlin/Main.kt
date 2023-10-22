@@ -9,15 +9,45 @@ data class Post(
     val canEdit: Boolean = true,
     val likes: Likes = Likes(0, true, true, true),
     val isPinned: Boolean = false,
+    val comments: Comments = Comments(0, true),
+    val reposts: Reposts = Reposts(),
+    val views: Views = Views(),
+    val postType: String = "post",
+    val isFavorite: Boolean = true,
+    val markedAsAds: Boolean = false,
+    val postponedId: Int = 678,
+    val geo: Geo = Geo(),
+    val fromId: Int = 9087,
+    val createdBy: Int = 4567,
+    val friendsOnly: Boolean = false,
+    val replyOwnerId: Int = 56840,
+    val replyPostId: Int = 3569,
     val attachments: Array<Attachment> = emptyArray()
+)
 
-    )
+data class Comments(
+    val count: Int = 0,
+    val canPost: Boolean = true
+)
 
+data class Reposts(
+    val count: Int = 0,
+    val userReposted: Boolean = false
+)
+
+data class Views(
+    val count: Int = 789
+)
 data class Likes(
     val count: Int,
     val userLikes: Boolean,
     val canLike: Boolean = true,
     val canPublish: Boolean = true,
+)
+
+data class Geo(
+    val type: String = "forest",
+    val coordinates: String = "37°25'19.07\"С, 122°05'06.24\"З"
 )
 
 interface Attachment {
@@ -55,6 +85,58 @@ data class VideoAttachment(
         return "type: $type and video: $video"
     }
 }
+
+data class Audio(
+    val id: Int,
+    val ownerId: Int,
+    val artist: String,
+    val title: String
+)
+
+data class AudioAttachment(
+    val audio: Audio
+): Attachment {
+    override val type: String = "audio"
+    override fun toString(): String {
+        return "type: $type and audio: $audio"
+    }
+}
+
+
+data class Link(
+    val url: String,
+    val title: String,
+    val caption: String,
+    val description: String
+)
+
+data class LinkAttachment(
+    val link: Link
+): Attachment {
+    override val type: String = "link"
+    override fun toString(): String {
+        return "type: $type and link: $link"
+    }
+}
+
+
+data class File(
+    val id: Int = 5678,
+    val ownerId: Int,
+    val title: String = "My dog",
+    val size: Int = 12678,
+    val ext: String = "png"
+
+)
+data class FileAttachment(
+    val file: File
+): Attachment {
+    override val type: String = "file"
+    override fun toString(): String {
+        return "type: $type and file: $file"
+    }
+}
+
 
 object WallService {
     private var posts = emptyArray<Post>()
