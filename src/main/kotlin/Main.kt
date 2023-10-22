@@ -9,6 +9,7 @@ data class Post(
     val canEdit: Boolean = true,
     val likes: Likes = Likes(0, true, true, true),
     val isPinned: Boolean = false,
+    val attachments: Array<Attachment> = emptyArray()
 
     )
 
@@ -18,6 +19,42 @@ data class Likes(
     val canLike: Boolean = true,
     val canPublish: Boolean = true,
 )
+
+interface Attachment {
+    val type: String
+}
+
+data class Photo(
+    val id: Int,
+    val ownerId: Int,
+    val photo130: String,
+    val photo604: String
+
+)
+data class PhotoAttachment(
+    val photo: Photo
+): Attachment {
+    override val type: String = "photo"
+    override fun toString(): String {
+        return "type: $type and photo: $photo"
+    }
+}
+
+data class Video(
+    val id: Int,
+    val ownerId: Int,
+    val title: String,
+    val duration: Int
+
+)
+data class VideoAttachment(
+    val video: Video
+): Attachment {
+    override val type: String = "video"
+    override fun toString(): String {
+        return "type: $type and video: $video"
+    }
+}
 
 object WallService {
     private var posts = emptyArray<Post>()
@@ -54,8 +91,8 @@ object WallService {
 
 fun main() {
 
-    WallService.add(Post(1, 156, 202020, "hello!", "manager", true, true, false))
-    WallService.add(Post(2, 241, 212020, "hi!", "Alex", true, true, false))
-    WallService.update(Post(2, 241, 212020, "Hi!", "Mary", true, true, false))
+    WallService.add(Post(1, 156, 202020, "hello!", "manager", true, true, false, attachments = arrayOf(PhotoAttachment(Photo(3, 2, "predprosmotr1", "polnorazmer2")), VideoAttachment(Video(5, 34, "Cute Dog", 2)))))
+    WallService.add(Post(2, 241, 212020, "hi!", "Alex", true, true, false, attachments = arrayOf(PhotoAttachment(Photo(13, 78, "predprosmotr2", "polnorazmer2")), VideoAttachment(Video(55, 39, "Cute Cat", 1)))))
+    WallService.update(Post(2, 241, 212020, "Hi!", "Mary", true, true, false, attachments = arrayOf(PhotoAttachment(Photo(24, 90, "predprosmotr3", "polnorazmer3")))))
     WallService.printPosts()
 }
