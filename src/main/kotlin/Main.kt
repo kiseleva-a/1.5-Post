@@ -137,10 +137,19 @@ data class FileAttachment(
     }
 }
 
+class PostNotFoundException(message: String) : RuntimeException(message)
 
 object WallService {
     private var posts = emptyArray<Post>()
+    private var comments = emptyArray<Comments>()
     private var lastId = 0
+
+     fun createComment(postId: Int, comment: Comments): Comments {
+        val post = posts.find { it.id == postId } ?: throw PostNotFoundException("Post $postId is not found")
+        comments += comment
+        return comment
+    }
+
 
     fun add(post: Post): Post {
         posts += post.copy(id = ++lastId)
@@ -165,6 +174,8 @@ object WallService {
         println()
     }
 
+
+
     fun clear() {
         posts = emptyArray()
         lastId = 0
@@ -177,4 +188,5 @@ fun main() {
     WallService.add(Post(2, 241, 212020, "hi!", "Alex", true, true, false, attachments = arrayOf(PhotoAttachment(Photo(13, 78, "predprosmotr2", "polnorazmer2")), VideoAttachment(Video(55, 39, "Cute Cat", 1)))))
     WallService.update(Post(2, 241, 212020, "Hi!", "Mary", true, true, false, attachments = arrayOf(PhotoAttachment(Photo(24, 90, "predprosmotr3", "polnorazmer3")))))
     WallService.printPosts()
+
 }

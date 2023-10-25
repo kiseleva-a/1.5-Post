@@ -34,4 +34,16 @@ class WallServiceTest {
         val result = WallService.update(Post(20, 200, 231020, "I dropped the book", "Pat", true, true, true, Likes(12, true, true, true), false, attachments = arrayOf(VideoAttachment(Video(8098, 390, "Opinion", 6)))))
         assertFalse(result)
     }
+
+    @Test(expected = PostNotFoundException::class)
+    fun shouldThrow() {
+        WallService.createComment(23, comment = Comments(23, true))
+    }
+
+    @Test
+    fun newCommentCreatedSuccessfully() {
+        WallService.add(Post(1,134, 202120, "How are you!", "Jean", true, true, false, attachments = arrayOf(PhotoAttachment(Photo(56, 89, "predprosmotr130", "polnorazmer680")))))
+        WallService.createComment(1, Comments(34, true))
+    }
+
 }
